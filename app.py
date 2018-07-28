@@ -49,7 +49,7 @@ def webhook():
                         print profile.json().get("first_name")
 
                     if any(m in ["hi", "hello"] for m in message_text.lower().split()):
-                        send_message(sender_id, "Hey " + profile.first_name + "!")
+                        send_message(sender_id, "Hey " + profile.json().get("first_name") + "!")
 
                     send_message(sender_id, select_compliment())
 
