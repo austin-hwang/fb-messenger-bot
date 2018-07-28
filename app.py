@@ -4,13 +4,13 @@ import json
 import random
 from datetime import datetime
 import schedule
-import apiai
+# import apiai
 
 import requests
 from flask import Flask, request
 
-CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
-ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
+# CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
+# ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 app = Flask(__name__)
 
@@ -50,17 +50,17 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
 
                     # prepare API.ai request
-                    req = ai.text_request()
-                    req.lang = 'en'  # optional, default value equal 'en'
-                    req.query = message_text
+                    # req = ai.text_request()
+                    # req.lang = 'en'  # optional, default value equal 'en'
+                    # req.query = message_text
 
-                    # get response from API.ai
-                    api_response = req.getresponse()
-                    responsestr = api_response.read().decode('utf-8')
-                    response_obj = json.loads(responsestr)
-                    if 'result' in response_obj:
-                        response = response_obj["result"]["fulfillment"]["speech"]
-                        send_message(sender_id, response)
+                    # # get response from API.ai
+                    # api_response = req.getresponse()
+                    # responsestr = api_response.read().decode('utf-8')
+                    # response_obj = json.loads(responsestr)
+                    # if 'result' in response_obj:
+                    #     response = response_obj["result"]["fulfillment"]["speech"]
+                    #     send_message(sender_id, response)
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
@@ -68,6 +68,10 @@ def webhook():
                             users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
+                        
+                        with open('./db.txt') as database:
+                            for user in database.readlines():
+                                print user
                     elif message_text.lower() == 'unsubscribe':
                         with open('./db.txt', 'a+') as database:
                             users = database.readlines()
