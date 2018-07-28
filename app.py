@@ -66,12 +66,12 @@ def webhook():
                     if message_text.lower() == 'subscribe':
                         with open('./db.txt', 'ra') as database:
                             users = database.readlines()
-                            if not any(sender_id in users.strip()):
+                            if not any(sender_id in u for u in users.strip()):
                                 database.write(sender_id + '\n')
                     elif message_text.lower() == 'unsubscribe':
                         with open('./db.txt', 'ra') as database:
                             users = database.readlines()
-                            if any(sender_id in users.strip()):
+                            if any(sender_id in u for u in users.strip()):
                                 index = users.index(sender_id)
                                 del users[index]
                                 for id in users:
@@ -128,6 +128,8 @@ def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
         pass  # squash logging errors in case of non-ascii text
     sys.stdout.flush()
 
+def job:
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
