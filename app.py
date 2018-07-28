@@ -66,12 +66,12 @@ def webhook():
                     if message_text.lower() == 'subscribe':
                         with open('./db.txt', 'ra') as database:
                             users = database.readlines()
-                            if not any(sender_id in u for u.strip() in users):
+                            if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
                     elif message_text.lower() == 'unsubscribe':
                         with open('./db.txt', 'ra') as database:
                             users = database.readlines()
-                            if any(sender_id in u for u.strip() in users):
+                            if any(sender_id in u.strip() for u in users):
                                 index = users.index(sender_id)
                                 del users[index]
                                 for id in users:
