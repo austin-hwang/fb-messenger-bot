@@ -17,13 +17,20 @@ app = Flask(__name__)
 #1918812524829331
 #1824472640933296
 
-def job():
-    print("I'm working...")
-schedule.every(10).minutes.do(job)
+
 
 def select_compliment():
     with open('./compliments.txt') as text:
         return random.choice(text.readlines()).strip()
+
+def job():
+    with open('./db.txt', 'r') as database:
+        users = database.readlines()
+        for sender_id in users:
+            send_message(sender_id.strip(), select_compliment())
+        
+schedule.every(1).minutes.do(job)
+
 
 @app.route('/', methods=['GET'])
 def verify():
