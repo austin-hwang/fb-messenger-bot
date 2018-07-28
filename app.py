@@ -47,7 +47,7 @@ def webhook():
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     # print profile
 
-                    send_message(sender_id, select_compliment())
+                    send_message(sender_id, "I am working")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
