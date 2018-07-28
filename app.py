@@ -14,6 +14,13 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+#1918812524829331
+#1824472640933296
+
+def job():
+    print("I'm working...")
+schedule.every(10).minutes.do(job)
+
 def select_compliment():
     with open('./compliments.txt') as text:
         return random.choice(text.readlines()).strip()
@@ -64,22 +71,22 @@ def webhook():
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
-                        with open('./db.txt', 'a+') as database:
+                        with open('./db.txt', 'a') as database:
                             users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
-                        
                         with open('./db.txt') as database:
                             for user in database.readlines():
                                 print user
                     elif message_text.lower() == 'unsubscribe':
-                        with open('./db.txt', 'a+') as database:
+                        with open('./db.txt', 'r') as database:
                             users = database.readlines()
                             if any(sender_id in u.strip() for u in users):
                                 index = users.index(sender_id + '\n')
-                                del users[index]
-                                for id in users:
-                                    database.write(sender_id)
+                                users.pop(index)
+                        with open('./db.txt', 'w') as db:
+                            for id in users:
+                                db.write(id)
                     elif 'compliment' in message_text.lower():
                         send_message(sender_id, select_compliment())
 
