@@ -86,9 +86,9 @@ def webhook():
                                 database.write(sender_id + '\n')
                             users = database.seek(0)
                             print "Entered subscribe"
-                            if users is not None:
-                                for u in users:
-                                    print "After subscribing: " + u
+                  
+                            for u in users:
+                                print "After subscribing: " + u
 
                     elif message_text.lower() == 'unsubscribe':
                         users = None
