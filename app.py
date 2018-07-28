@@ -3,12 +3,13 @@ import sys
 import json
 import random
 from datetime import datetime
+import schedule
 import apiai
 
 import requests
 from flask import Flask, request
 
-CLIENT_ACCESS_TOKEN = "8f22ac85d8b848e29eb8491ce215bd53" #"e6a80cb21ef64a4e8bec7a6b050c2ebd"
+CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
 ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 app = Flask(__name__)
@@ -62,8 +63,21 @@ def webhook():
                         send_message(sender_id, response)
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
-
-                    send_message(sender_id, select_compliment())
+                    if message_text.lower() == 'subscribe':
+                        with open('./db.txt', 'ra') as database:
+                            users = database.readlines()
+                            if not any(sender_id in users.strip()):
+                                database.write(sender_id + '\n')
+                    elif message_text.lower() == 'unsubscribe':
+                        with open('./db.txt', 'ra') as database:
+                            users = database.readlines()
+                            if any(sender_id in users.strip()):
+                                index = users.index(sender_id)
+                                del users[index]
+                                for id in users:
+                                    database.write(sender_id + '\n')
+                    elif 'compliment' in message_text.lower():
+                        send_message(sender_id, select_compliment())
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
