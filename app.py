@@ -28,6 +28,7 @@ def job():
         users = database.readlines()
         for sender_id in users:
             send_message(sender_id.strip(), select_compliment())
+   
         
 schedule.every(1).minutes.do(job)
 
