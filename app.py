@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 def select_compliment():
     with open('./compliments.txt') as text:
-        return random.choice(text).strip()
+        return random.choice(text.readlines()).strip()
 
 @app.route('/', methods=['GET'])
 def verify():
