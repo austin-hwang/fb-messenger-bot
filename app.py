@@ -75,9 +75,9 @@ def webhook():
                             users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
-                                
-                            for user in database.readlines():
-                                print "After subscribing: " + user
+
+                            for u in users:
+                                print "After subscribing: " + u
 
                     elif message_text.lower() == 'unsubscribe':
                         users = None
@@ -88,12 +88,10 @@ def webhook():
                                 users.pop(index)
 
                         with open('./db.txt', 'w+') as db:
-                            for id in users:
-                                db.write(id)
+                            for u in users:
+                                db.write(u)
+                                print "After unsubscribing: " + u
 
-                        with open('./db.txt', 'r+') as database:
-                            for user in database.readlines():
-                                print "After unsubscribing: " + user
                     elif 'compliment' in message_text.lower():
                         send_message(sender_id, select_compliment())
 
