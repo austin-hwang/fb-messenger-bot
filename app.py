@@ -13,7 +13,7 @@ import os
 import psycopg2
 import urlparse
 
-DATABASE_URL = os.environ['postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261e56c2a95c9189ff00f9c29c78f@ec2-23-21-216-174.compute-1.amazonaws.com:5432/d26s7gc8eh5d9k']
+DATABASE_URL = 'postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261e56c2a95c9189ff00f9c29c78f@ec2-23-21-216-174.compute-1.amazonaws.com:5432/d26s7gc8eh5d9k'
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
