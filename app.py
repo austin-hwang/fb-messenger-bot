@@ -75,7 +75,7 @@ def webhook():
                             users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
-                           users = database.seek(0)
+                            users = database.seek(0)
                             for u in users:
                                 print "Entered subscribe"
                                 print "After subscribing: " + u
