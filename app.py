@@ -48,6 +48,9 @@ def webhook():
                     if profile.status_code == 200:
                         print profile.text
 
+                    if any(m in ["hi", "hello"] for m in message_text.lower().split('')):
+                        send_message(sender_id, "Hey " + profile.first_name + "!")
+
                     send_message(sender_id, select_compliment())
 
                 if messaging_event.get("delivery"):  # delivery confirmation
