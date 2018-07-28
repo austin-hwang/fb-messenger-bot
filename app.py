@@ -88,7 +88,7 @@ def webhook():
                             print "Entered subscribe"
                   
                             for u in users:
-                                print "After subscribing: ",`` u
+                                print "After subscribing: ", u
 
                     elif message_text.lower() == 'unsubscribe':
                         users = None
