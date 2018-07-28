@@ -45,7 +45,8 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
                     
                     profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
-                    print profile
+                    if profile.status_code == 200:
+                        print profile.text
 
                     send_message(sender_id, select_compliment())
 
@@ -81,10 +82,11 @@ def send_message(recipient_id, message_text):
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
-        print(r.text)
+        print r.text
         log(r.status_code)
         # log(r.text)
-
+    if r.status_code == 200:
+        print "This is working correctly"
 
 def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
     try:
