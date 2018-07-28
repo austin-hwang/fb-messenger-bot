@@ -76,7 +76,7 @@ def webhook():
                         with open('./db.txt', 'a+') as database:
                             users = database.readlines()
                             if any(sender_id in u.strip() for u in users):
-                                index = users.index(sender_id)
+                                index = users.index(sender_id + '\n')
                                 del users[index]
                                 for id in users:
                                     database.write(sender_id)
