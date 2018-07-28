@@ -64,18 +64,18 @@ def webhook():
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
-                        with open('./db.txt', 'ra') as database:
+                        with open('./db.txt', 'a+') as database:
                             users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
                     elif message_text.lower() == 'unsubscribe':
-                        with open('./db.txt', 'ra') as database:
+                        with open('./db.txt', 'a+') as database:
                             users = database.readlines()
                             if any(sender_id in u.strip() for u in users):
                                 index = users.index(sender_id)
                                 del users[index]
                                 for id in users:
-                                    database.write(sender_id + '\n')
+                                    database.write(sender_id)
                     elif 'compliment' in message_text.lower():
                         send_message(sender_id, select_compliment())
 
