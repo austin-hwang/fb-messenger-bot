@@ -18,17 +18,11 @@ DATABASE_URL = 'postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 cur = conn.cursor()
-cur.execute("CREATE TABLE user (id VARCHAR PRIMARY KEY);")
 
 # CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
 # ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 app = Flask(__name__)
-
-#1918812524829331
-#1824472640933296
-
-
 
 def select_compliment():
     with open('./compliments.txt') as text:
@@ -41,7 +35,7 @@ def job():
             send_message(sender_id.strip(), select_compliment())
    
         
-schedule.every(1).minutes.do(job)
+# schedule.every(1).minutes.do(job)
 
 
 @app.route('/', methods=['GET'])
