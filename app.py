@@ -71,25 +71,22 @@ def webhook():
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
-                        users = None
-                        with open('./db.txt', 'r+') as database:
-                            users = database.readlines()
-
                         with open('./db.txt', 'a+') as database:
+                            users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
-
-                        with open('./db.txt', 'r+') as database:
+                                
                             for user in database.readlines():
                                 print "After subscribing: " + user
 
                     elif message_text.lower() == 'unsubscribe':
                         users = None
-                        with open('./db.txt', 'r+') as database:
+                        with open('./db.txt', 'r') as database:
                             users = database.readlines()
                             if any(sender_id in u.strip() for u in users):
                                 index = users.index(sender_id + '\n')
                                 users.pop(index)
+
                         with open('./db.txt', 'w+') as db:
                             for id in users:
                                 db.write(id)
