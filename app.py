@@ -61,12 +61,7 @@ def webhook():
                         response = response_obj["result"]["fulfillment"]["speech"]
                         send_message(sender_id, response)
                     
-                    profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
-                    if profile.status_code == 200:
-                        print profile.json().get("first_name")
-
-                    if any(m in ["hi", "hello"] for m in message_text.lower().split()):
-                        send_message(sender_id, "Hey " + profile.json().get("first_name") + "!")
+                    # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
 
                     send_message(sender_id, select_compliment())
 
