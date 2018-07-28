@@ -73,7 +73,7 @@ def webhook():
                     if message_text.lower() == 'subscribe':
                         with open('./db.txt', 'a+') as database:
                             users = database.readlines()
-                            print "users read in: " + users
+                            print "users read in:", users
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
                             users = database.seek(0)
