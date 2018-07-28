@@ -8,7 +8,7 @@ import apiai
 import requests
 from flask import Flask, request
 
-CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
+CLIENT_ACCESS_TOKEN = "8f22ac85d8b848e29eb8491ce215bd53" #"e6a80cb21ef64a4e8bec7a6b050c2ebd"
 ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 app = Flask(__name__)
