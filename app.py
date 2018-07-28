@@ -9,6 +9,24 @@ import schedule
 import requests
 from flask import Flask, request
 
+import os
+import psycopg2
+import urlparse
+
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261e56c2a95c9189ff00f9c29c78f@ec2-23-21-216-174.compute-1.amazonaws.com:5432/d26s7gc8eh5d9k"])
+
+conn = psycopg2.connect(
+    database=url.path[1:],
+    user=url.username,
+    password=url.password,
+    host=url.hostname,
+    port=url.port
+)
+
+cur = conn.cursor()
+cur.execute("CREATE TABLE user (id VARCHAR PRIMARY KEY);")
+
 # CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
 # ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
@@ -79,29 +97,37 @@ def webhook():
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
-                        with open('./db.txt', 'a+') as database:
-                            users = database.readlines()
-                            print "users read in:", users
-                            if not any(sender_id in u.strip() for u in users):
-                                database.write(sender_id + '\n')
-       
-                            print "Entered subscribe"
-                  
-                            for u in users:
-                                print "After subscribing: ", u
+                        cur.execute("INSERT INTO user (id) VALUES (%s)", sender_id)
+                        print cur.execute("SELECT * FROM user")
+                        conn.commit()
+                        # with open('./db.txt', 'a+') as database:
+                        #     users = database.readlines()
+                        #     print "users read in:", users
+                        #     if not any(sender_id in u.strip() for u in users):
+                        #         database.write(sender_id + '\n')
+                        #         print "Writing to file"
+                            
+                        #     print "Entered subscribe"
+                        #     users.append(sender_id + '\n')
+
+                        #     for u in users:
+                        #         print "After subscribing: ", u
 
                     elif message_text.lower() == 'unsubscribe':
-                        users = None
-                        with open('./db.txt', 'r') as database:
-                            users = database.readlines()
-                            if any(sender_id in u.strip() for u in users):
-                                index = users.index(sender_id + '\n')
-                                users.pop(index)
-                        print "Entered unsubscribe"
-                        with open('./db.txt', 'w+') as db:
-                            for u in users:
-                                db.write(u)
-                                print "After unsubscribing: " + u
+                        cur.execute("DELETE FROM user WHERE id = %s", sender_id)
+                        print cur.execute("SELECT * FROM user")
+                        conn.commit()
+                        # users = None
+                        # with open('./db.txt', 'r') as database:
+                        #     users = database.readlines()
+                        #     if any(sender_id in u.strip() for u in users):
+                        #         index = users.index(sender_id + '\n')
+                        #         users.pop(index)
+                        # print "Entered unsubscribe"
+                        # with open('./db.txt', 'w+') as db:
+                        #     for u in users:
+                        #         db.write(u)
+                        #         print "After unsubscribing: " + u
 
                     elif 'compliment' in message_text.lower():
                         send_message(sender_id, select_compliment())
