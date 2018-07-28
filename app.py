@@ -46,7 +46,7 @@ def webhook():
                     
                     profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if profile.status_code == 200:
-                        print profile["fist_name"]
+                        print profile["first_name"]
 
                     if any(m in ["hi", "hello"] for m in message_text.lower().split()):
                         send_message(sender_id, "Hey " + profile.first_name + "!")
