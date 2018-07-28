@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import random
 from datetime import datetime
 
 import requests
@@ -8,6 +9,9 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+def select_compliment():
+    with open('./compliments.txt') as text:
+        return random.choice(compliments).strip()
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -39,8 +43,11 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
+                    
+                    profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
+                    log(profile)
 
-                    send_message(sender_id, "roger that!")
+                    send_message(sender_id, select_compliment())
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
