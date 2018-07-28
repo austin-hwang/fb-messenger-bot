@@ -45,7 +45,7 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
                     
                     profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
-                    log(profile)
+                    print profile
 
                     send_message(sender_id, select_compliment())
 
