@@ -75,8 +75,9 @@ def webhook():
                             users = database.readlines()
                             if not any(sender_id in u.strip() for u in users):
                                 database.write(sender_id + '\n')
-
+                            database.seek(0)
                             for u in users:
+                                print "Entered subscribe"
                                 print "After subscribing: " + u
 
                     elif message_text.lower() == 'unsubscribe':
@@ -90,6 +91,7 @@ def webhook():
                         with open('./db.txt', 'w+') as db:
                             for u in users:
                                 db.write(u)
+                                print "Entered unsubscribe"
                                 print "After unsubscribing: " + u
 
                     elif 'compliment' in message_text.lower():
