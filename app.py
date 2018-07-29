@@ -49,11 +49,13 @@ def job():
 
         for r in result:
             send_message(r[0], select_compliment())
+            print("Subscriber compliment being sent")
 
 schedule.every(1).seconds.do(job)
 
 for x in range(10):
     schedule.run_pending()
+    time.sleep(1)
 
 @app.route('/', methods=['GET'])
 def verify():
