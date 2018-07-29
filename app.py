@@ -50,6 +50,10 @@ def job():
         for r in result:
             send_message(r[0], select_compliment())
 
+schedule.every(1).seconds.do(job)
+
+for x in range(10):
+    schedule.run_pending()
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -188,7 +192,3 @@ def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
-    schedule.every(1).seconds.do(job)
-    for x in range(10):
-        schedule.run_pending()
