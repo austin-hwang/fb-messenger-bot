@@ -16,8 +16,6 @@ import urlparse
 DATABASE_URL = 'postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261e56c2a95c9189ff00f9c29c78f@ec2-23-21-216-174.compute-1.amazonaws.com:5432/d26s7gc8eh5d9k'
 
 
-
-
 def get_data(action, sender_id):
     with psycopg2.connect(DATABASE_URL, sslmode='require') as conn:
         cur = conn.cursor()
@@ -51,12 +49,7 @@ def job():
 
         for r in result:
             send_message(r[0], select_compliment())
-   
-        
-schedule.every(1).minutes.do(job)
 
-while True:
-    schedule.run_pending()
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -195,3 +188,7 @@ def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    schedule.every(1).seconds.do(job)
+    for x in range(10):
+        schedule.run_pending()
