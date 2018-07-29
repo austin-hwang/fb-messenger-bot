@@ -95,8 +95,14 @@ def webhook():
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
-                        cur.execute("INSERT INTO subscriber (id) VALUES (%s)", (sender_id,))
+
+                        cur.execute("INSERT INTO subscriber (id) VALUES (%s) ON CONFLICT (id) DO NOTHING", (sender_id,))
+
+                        # cur.execute("SELECT EXISTS(SELECT * FROM subscriber WHERE id = %s)", (sender_id, ))
+                        # if not cur.fetchone()[0]:
+                        #     cur.execute("INSERT INTO subscriber (id) VALUES (%s)", (sender_id,))
                         print cur.execute("TABLE subscriber")
+                        send_message(sender_id, "Thank you for subscribing! You will receive a compliment every 24 hours :)")
                         # with open('./db.txt', 'a+') as database:
                         #     users = database.readlines()
                         #     print "users read in:", users
@@ -113,6 +119,7 @@ def webhook():
                     elif message_text.lower() == 'unsubscribe':
                         cur.execute("DELETE FROM subscriber WHERE id = (%s)", (sender_id,))                        
                         print cur.execute("TABLE subscriber")
+                        send_message(sender_id, "Sorry to see you go :(")
                         # users = None
                         # with open('./db.txt', 'r') as database:
                         #     users = database.readlines()
