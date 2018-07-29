@@ -5,7 +5,7 @@ import random
 from datetime import datetime
 import schedule
 import time
-# import apiai
+import apiai
 
 import requests
 from flask import Flask, request
@@ -33,8 +33,8 @@ def get_data(action, sender_id):
 
     return result
 
-# CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
-# ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
+CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
+ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 app = Flask(__name__)
 
@@ -89,19 +89,6 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-
-                    # prepare API.ai request
-                    # req = ai.text_request()
-                    # req.lang = 'en'  # optional, default value equal 'en'
-                    # req.query = message_text
-
-                    # # get response from API.ai
-                    # api_response = req.getresponse()
-                    # responsestr = api_response.read().decode('utf-8')
-                    # response_obj = json.loads(responsestr)
-                    # if 'result' in response_obj:
-                    #     response = response_obj["result"]["fulfillment"]["speech"]
-                    #     send_message(sender_id, response)
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
@@ -144,6 +131,19 @@ def webhook():
 
                     elif 'compliment' in message_text.lower():
                         send_message(sender_id, select_compliment())
+                    else:
+                        # prepare API.ai request
+                        req = ai.text_request()
+                        req.lang = 'en'  # optional, default value equal 'en'
+                        req.query = message_text
+
+                        # get response from API.ai
+                        api_response = req.getresponse()
+                        responsestr = api_response.read().decode('utf-8')
+                        response_obj = json.loads(responsestr)
+                        if 'result' in response_obj:
+                            response = response_obj["result"]["fulfillment"]["speech"]
+                            send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
