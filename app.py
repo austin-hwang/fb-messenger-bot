@@ -84,7 +84,7 @@ def webhook():
                     
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
-                        cur.execute("INSERT INTO user (id) VALUES (%s)", sender_id)
+                        cur.execute("INSERT INTO user (id) VALUES (%s)", (sender_id))
                         print cur.execute("SELECT * FROM user")
                         conn.commit()
                         # with open('./db.txt', 'a+') as database:
@@ -101,7 +101,7 @@ def webhook():
                         #         print "After subscribing: ", u
 
                     elif message_text.lower() == 'unsubscribe':
-                        cur.execute("DELETE FROM user WHERE id = %s", sender_id)
+                        cur.execute("DELETE FROM user WHERE id = %s", (sender_id))
                         print cur.execute("SELECT * FROM user")
                         conn.commit()
                         # users = None
