@@ -18,7 +18,7 @@ DATABASE_URL = 'postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261
 
 
 
-def get_data(action):
+def get_data(action, sender_id):
     with psycopg2.connect(DATABASE_URL, sslmode='require') as conn:
         cur = conn.cursor()
         if action == 'subscribe':
@@ -31,7 +31,7 @@ def get_data(action):
         cur.execute("SELECT * FROM subscriber")
 
         result = cur.fetchall()
-        
+
     return result
 
 # CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
@@ -101,7 +101,7 @@ def webhook():
                     if message_text.lower() == 'subscribe':
 
                         # cur.execute("INSERT INTO subscriber (id) VALUES (%s) ON CONFLICT (id) DO NOTHING", (sender_id,))
-                        get_data('subscribe')
+                        get_data('subscribe', sender_id)
 
                         # cur.execute("SELECT EXISTS(SELECT * FROM subscriber WHERE id = %s)", (sender_id, ))
                         # if not cur.fetchone()[0]:
@@ -122,7 +122,7 @@ def webhook():
                         #         print "After subscribing: ", u
 
                     elif message_text.lower() == 'unsubscribe':
-                        get_data('unsubscribe')                     
+                        get_data('unsubscribe', sender_id)                     
                         send_message(sender_id, "Sorry to see you go :(")
                         # users = None
                         # with open('./db.txt', 'r') as database:
