@@ -44,10 +44,13 @@ def select_compliment():
         return random.choice(text.readlines()).strip()
 
 def job():
-    cur.execute('SELECT * FROM subscriber')
-    result = cur.fetchall()
-    for r in result:
-        send_message(r[0], select_compliment())
+    with psycopg2.connect(DATABASE_URL, sslmode='require') as conn:
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM subscriber')
+        result = cur.fetchall()
+
+        for r in result:
+            send_message(r[0], select_compliment())
    
         
 schedule.every(1).minutes.do(job)
