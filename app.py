@@ -16,8 +16,19 @@ import urlparse
 DATABASE_URL = 'postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261e56c2a95c9189ff00f9c29c78f@ec2-23-21-216-174.compute-1.amazonaws.com:5432/d26s7gc8eh5d9k'
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
 cur = conn.cursor()
+
+
+
+def get_data():
+    DATABASE_URL = 'postgres://kamykntyvkmwax:aad8109a6317a7920a5a7e4c743d06b4d51261e56c2a95c9189ff00f9c29c78f@ec2-23-21-216-174.compute-1.amazonaws.com:5432/d26s7gc8eh5d9k'
+
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
+
+    cur.execute("INSERT INTO subscriber (id) VALUES (%s)", (sender_id,))
+
+    cur.execute("DELETE FROM subscriber WHERE id = %s", (sender_id,)) 
 
 # CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
 # ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
@@ -85,8 +96,7 @@ def webhook():
                     # profile = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     if message_text.lower() == 'subscribe':
                         cur.execute("INSERT INTO subscriber (id) VALUES (%s)", (sender_id,))
-                        conn.commit()
-                        print cur.execute("SELECT * FROM user")
+                        print cur.execute("TABLE subscriber")
                         # with open('./db.txt', 'a+') as database:
                         #     users = database.readlines()
                         #     print "users read in:", users
@@ -101,9 +111,8 @@ def webhook():
                         #         print "After subscribing: ", u
 
                     elif message_text.lower() == 'unsubscribe':
-                        cur.execute("DELETE FROM subscriber WHERE id = %s", (sender_id,))                        
-                        conn.commit()
-                        print cur.execute("SELECT * FROM user")
+                        cur.execute("DELETE FROM subscriber WHERE id = (%s)", (sender_id,))                        
+                        print cur.execute("TABLE subscriber")
                         # users = None
                         # with open('./db.txt', 'r') as database:
                         #     users = database.readlines()
