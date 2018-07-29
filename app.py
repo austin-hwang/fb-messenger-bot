@@ -33,7 +33,8 @@ def get_data(action, sender_id):
 
     return result
 
-CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
+#CLIENT_ACCESS_TOKEN = "e6a80cb21ef64a4e8bec7a6b050c2ebd"
+CLIENT_ACCESS_TOKEN = "fbc12efb969f453c9f2b6e2862517bb7"
 ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 app = Flask(__name__)
