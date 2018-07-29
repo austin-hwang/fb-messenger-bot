@@ -4,6 +4,7 @@ import json
 import random
 from datetime import datetime
 import schedule
+import time
 # import apiai
 
 import requests
@@ -51,7 +52,7 @@ def job():
             send_message(r[0], select_compliment())
             print("Subscriber compliment being sent")
 
-schedule.every(1).seconds.do(job)
+schedule.every(5).seconds.do(job)
 
 for x in range(10):
     schedule.run_pending()
