@@ -25,7 +25,7 @@ def get_data(action, sender_id):
             cur.execute("INSERT INTO subscriber (id) VALUES (%s) ON CONFLICT (id) DO NOTHING", (sender_id,))
         elif action == 'unsubscribe':
             cur.execute("DELETE FROM subscriber WHERE id = (%s)", (sender_id,))
-
+            
         conn.commit()
 
         cur.execute("SELECT * FROM subscriber")
@@ -44,13 +44,13 @@ def select_compliment():
         return random.choice(text.readlines()).strip()
 
 def job():
-    with open('./db.txt', 'r') as database:
-        users = database.readlines()
-        for sender_id in users:
-            send_message(sender_id.strip(), select_compliment())
+    cur.execute('SELECT * FROM subscriber')
+    result = cur.fetchall()
+    for r in result:
+        send_message(r[0], select_compliment())
    
         
-# schedule.every(1).minutes.do(job)
+schedule.every(1).minutes.do(job)
 
 
 @app.route('/', methods=['GET'])
